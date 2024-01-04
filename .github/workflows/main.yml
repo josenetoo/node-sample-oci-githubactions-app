@@ -16,4 +16,4 @@ jobs:
         uses: oracle-actions/get-ocir-repository@v1.0
         with:
           name: oraclelinux
-          compartment: ${{ secrets.OCI_COMPARTMENT_OCID }
+          compartment: ${{ secrets.OCI_COMPARTMENT_OCID }}
