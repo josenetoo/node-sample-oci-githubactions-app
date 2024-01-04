@@ -15,21 +15,14 @@ jobs:
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
     steps:
       - name: Get or create an OCIR Repository
-        uses: oracle-actions/get-ocir-repository@v1.2.1
+        uses: oracle-actions/get-ocir-repository@e1f311d25f47e64619459cbf79b99cd05fd8595d
         id: get-ocir-repository
         with:
           name: oraclelinux
           compartment: ${{ secrets.OCI_COMPARTMENT_OCID }}
 
       - name: Log into OCIR
-        uses: oracle-actions/login-ocir@v1.2.1
+        uses: oracle-actions/login-ocir@f3bf26a0a3fcb7cfe437c605fd5394f05258714f
         id: login-ocir
         with:
           auth_token: ${{ secrets.OCI_AUTH_TOKEN }}
-
-      - name: Tag and push a container image
-        id: tag-and-push-image
-        run: |
-          docker pull oraclelinux:8-slim
-          docker tag "oraclelinux:8-slim" "${{ steps.get-ocir-repository.outputs.repo_path }}:8-slim"
-          docker push "${{ steps.get-ocir-repository.outputs.repo_path }}:8-slim"
