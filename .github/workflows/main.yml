@@ -14,13 +14,6 @@ jobs:
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
     steps:
-      - name: Get or create an OCIR Repository
-        uses: oracle-actions/get-ocir-repository@e1f311d25f47e64619459cbf79b99cd05fd8595d
-        id: get-ocir-repository
-        with:
-          name: oraclelinux
-          compartment: ${{ secrets.OCI_COMPARTMENT_OCID }}
-
       - name: Log into OCIR
         uses: oracle-actions/login-ocir@f3bf26a0a3fcb7cfe437c605fd5394f05258714f
         id: login-ocir
