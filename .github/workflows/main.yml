@@ -6,7 +6,7 @@ on:
       - main
       
 jobs:
-  build:
+  get-ocir-repository-test:
     runs-on: ubuntu-latest
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
@@ -15,19 +15,22 @@ jobs:
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
     steps:
-     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      
-      - name: Get access to OCIR
-        id: get-ocir
-        uses: oracle-actions/get-ocir-repository@v1.0
+      - name: Get or create an OCIR Repository
+        uses: oracle-actions/get-ocir-repository@v1.2.1
+        id: get-ocir-repository
         with:
           name: oraclelinux
-          compartment: ${{ secrets.OCI_COMPARTMENT_OCID }
-      
+          compartment: ${{ secrets.OCI_COMPARTMENT_OCID }}
+
       - name: Log into OCIR
-        uses: oracle-actions/login-ocir@v1.0
+        uses: oracle-actions/login-ocir@v1.2.1
         id: login-ocir
         with:
           auth_token: ${{ secrets.OCI_AUTH_TOKEN }}
+
+      - name: Tag and push a container image
+        id: tag-and-push-image
+        run: |
+          docker pull oraclelinux:8-slim
+          docker tag "oraclelinux:8-slim" "${{ steps.get-ocir-repository.outputs.repo_path }}:8-slim"
+          docker push "${{ steps.get-ocir-repository.outputs.repo_path }}:8-slim"
