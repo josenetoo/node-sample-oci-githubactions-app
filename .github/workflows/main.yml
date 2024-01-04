@@ -1,3 +1,9 @@
+name: oci-github
+
+on:
+  push:
+    branches:
+    - '*'
 jobs:
   get-ocir-repository-test:
     runs-on: ubuntu-22.04
