@@ -2,11 +2,12 @@ name: OCI GitHub
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
 jobs:
-  get-ocir-repository-test:
-    runs-on: ubuntu-22.04 Test
+ push-to-oci:
+    name: Push to OCI
+    needs: build
+    runs-on: ubuntu-latest
     env:
       OCI_CLI_USER: ${{ secrets.OCI_CLI_USER }}
       OCI_CLI_TENANCY: ${{ secrets.OCI_CLI_TENANCY }}
@@ -14,8 +15,9 @@ jobs:
       OCI_CLI_KEY_CONTENT: ${{ secrets.OCI_CLI_KEY_CONTENT }}
       OCI_CLI_REGION: ${{ secrets.OCI_CLI_REGION }}
     steps:
-      - name: Log into OCIR
-        uses: oracle-actions/login-ocir@f3bf26a0a3fcb7cfe437c605fd5394f05258714f
-        id: login-ocir
+      - name: Get or create an OCIR Repository
+        uses: oracle-actions/get-ocir-repository@v1.1
+        id: get-ocir-repository
         with:
-          auth_token: ${{ secrets.OCI_AUTH_TOKEN }}
+          name: oraclelinux
+          compartment: ${{ secrets.OCI_COMPARTMENT_OCID }}
