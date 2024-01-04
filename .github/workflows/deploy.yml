@@ -35,6 +35,6 @@ jobs:
       - name: Tag and push a container image
         id: tag-and-push-image
         run: |
-          docker build -t ${{ secrets.OCI_REPOSITORY_NAME }}:dev --file Dockerfile .
-          docker tag "${{ secrets.OCI_REPOSITORY_NAME }}:dev" "${{ secrets.OCI_REPOSITORY_PATH }}:dev"
-          docker push "${{ secrets.OCI_REPOSITORY_PATH }}:dev"
+          docker build -t ${{ secrets.OCI_REPOSITORY_NAME }}:prod --file Dockerfile .
+          docker tag "${{ secrets.OCI_REPOSITORY_NAME }}:prod" "${{ secrets.OCI_REPOSITORY_PATH }}:prod"
+          docker push "${{ secrets.OCI_REPOSITORY_PATH }}:prod"
